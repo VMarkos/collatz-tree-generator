@@ -1,4 +1,4 @@
-const nodeHeight = 36
+const nodeHeight = 24;
 
 function addNodeAt(x, y, w, id) {
     const svg = document.getElementById("tree-container");

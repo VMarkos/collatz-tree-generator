@@ -1,20 +1,37 @@
 let nodeWidth;
 let arrowLength;
 
+const input = document.getElementById("node-number");
+
+input.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        drawGraph();
+        console.log("er");
+    }
+});
+
 function drawGraph() {
-    const n = document.getElementById("node-number").value;
+    const n = input.value;
     const graphObject = computeGraph(n);
     const svg = document.getElementById("svg-container");
-    nodeWidth = Math.log10(graphObject["maxNodeLabel"]) * 16; // 8 is a custom constant!
+    let g = document.getElementById("tree-container");
+    svg.removeChild(g);
+    g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("id", "tree-container");
+    svg.appendChild(g);
+    nodeWidth = Math.log10(graphObject["maxNodeLabel"]) * 16; // 16 is a custom constant!
     if (nodeWidth < nodeHeight) {
         nodeWidth = nodeHeight;
     }
     arrowLength = nodeWidth;
+    if (arrowLength < 50) {
+        arrowLength = 50;
+    }
     const xStep = arrowLength + nodeWidth;
-    const svgWidth = (xStep + 8) * graphObject["maxRowCount"];
+    const svgWidth = (xStep + 8) * graphObject["maxRowCount"] + 32;
     const svgHeight = (arrowLength + nodeHeight + 8) * graphObject["forks"];
-    // const svgHeight = futureForksCheck(1, graphObject["maxNodeLabel"], ???, 0, graphObject["edges"]);
-    let yStep = svgHeight / 1.41; // FIXME SVG size issues.
+    let yStep = svgHeight * 1.41;
     svg.setAttribute("width", svgWidth);
     svg.setAttribute("height", svgHeight * 2);
     let currentX = 10;
@@ -28,7 +45,6 @@ function drawGraph() {
     let layerCounter = 0;
     const edges = graphObject["edges"];
     for (const edge of edges) {
-        // console.log(edge);
         const startX = nodePositions[edge["start"]]["x"];
         const startY = nodePositions[edge["start"]]["y"];
         currentX = startX + xStep;
@@ -65,53 +81,26 @@ function drawGraph() {
 }
 
 function futureForksCheck(currentNode, maxNodeLabel, yStep, layerCounter, edges) {
-    // yStep /= 1.41;
-    // console.log(currentNode);
+    yStep *= 2;
     const maxRowCount = Math.ceil(Math.log2(maxNodeLabel));
     maxNodeLabel = currentNode * Math.pow(2, maxRowCount - layerCounter);
-    // for (let i=layerCounter; i<maxRowCount; i++) {
-    //     maxNodeLabel *= 2;
-    // }
-    // console.log(maxNodeLabel);
     currentNode = 4 * currentNode;
-    // const frontier = [currentNode];
-    // let maxForks = 0;
-    let forksCount = 0;
+    let depth = 0;
     console.log(maxNodeLabel);
     while (currentNode < maxNodeLabel) {
         if ((currentNode - 1) % 3 !== 0) {
             currentNode = 2 * currentNode;
+            yStep /= 2;
         } else if (deepEdgeSearch(edges, {"start": currentNode, "end": (currentNode - 1) / 3, "isFork": true})) {
             currentNode = (currentNode - 1) / 3;
             maxNodeLabel /= 2;
-            forksCount += 1;
-            console.log(currentNode);
-            // const newMaxForks = maxConsecutiveForks(currentNode, edges);
-            // if (newMaxForks > maxForks) {
-            //     maxForks = newMaxForks;
-            // }
-            // currentNode = frontier.pop();
+            yStep /= 2;
+            depth += yStep;
         } else {
             break;
         }
     }
-    console.log("forks:");
-    console.log(forksCount);
-    let depth = 0;
-    for (let i=0; i<forksCount; i++) {
-        depth += yStep;
-        yStep /= 1.41;
-    }
     return depth;
-}
-
-function maxConsecutiveForks(node, edges) { // FIXME This does not suffice! You need to check for actual maximum depth --- i.e. apply recursively to next nodes or something like this.
-    let maxForks = 0;
-    while ((node - 1) % 3 === 0 && deepEdgeSearch(edges, {"start": node, "end": (node - 1) / 3, "isFork": true})) {
-        node = (node - 1) / 3;
-        maxForks++;
-    }
-    return maxForks;
 }
 
 function deepEdgeSearch(edges, edge) {

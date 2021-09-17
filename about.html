@@ -6,7 +6,7 @@
         <title>Collatz Tree Generator</title>
     </header>
     <body>
-        <div class="body-container">
+        <div class="about-container">
             <div class="header-container">
                 <div class="header-left-container">
                     <div class="header-flush-bottom">
@@ -33,9 +33,51 @@
                         </div>
                     </div>
                 </div>
-                <div class="header-right-container">
-                    Social
-                </div>
+            </div>
+            <div class="about-article-container">
+                <h1 class="about-h1">The Collatz Conjecture</h1>
+                <div class="article-container">
+                <p>You may have heard about the Collatz Conjecture somewhere over the internet or even the news - however, I doubt the latter is the case. Anyway, the Collatz Conjecture (CC, from now on), is quite
+                    simple to state and rather hard to solve - as with almost any serious maths. Take a positive integer, say 5 and play the following game:
+                </p>
+                <ul class="about-ul">
+                    <li>If it is odd, multiply it by 3 and add 1 to the result.</li>
+                    <li>Else, divide it by two.</li>
+                </ul>
+                <p>So, for instance, starting with 5 we get consecutively:</p>
+                <p class="p-center">5, 16, 8, 4, 2, 1, 4, 2, 1, 4, 2, 1, ...,</p>
+                and, as you may easily realize, the sequence goes on with 4s, 2s and 1s. The question that Collatz posed is the following, quite naturall one:
+                <p class="quote">"Given any positive integer n and following the above process, will we always arrive after finite steps to 1?"</p>
+                <p>As simple as it might seem at a first glance, this question has no definitive answer - either affirmative or not - until today.</p>
+            </div>
+            <h1 class="about-h1">The "Reverse" Collatz Conjecture</h1>
+            <div class="article-container">
+                <p>As with many problems in mathematics, some kind of "reverse" arises naturally and is, oftentimes, much simpler than the actual. While we cannot guarantee simplicity in the case of CC, we can at least easily
+                    formulate a "reverse" version. Namely, since we want to see if, starting from any positive integer, we will finally arrive to 1 following Collatz's instructions, we can ask the following question:
+                </p>
+                <p class="quote">"Starting from 1 and applying reverse Collatz steps, can we arrive at any number?"</p>
+                <p>In the above, "reverse Collatz steps" stands for the following two kinds of steps:</p>
+                <ul>
+                    <li>We either double the number we have at hand or;</li>
+                    <li>we subtract 1 by that number and divide by 3 (whenever applicable, of course).</li>
+                </ul>
+                <p>Thus, we now have another way to express the same question Collatz did. If this "reverse" version holds, then so does CC and if CC hodls then the answer to the above question is affirmative, as well.</p>
+            </div>
+            <h1 class="about-h1">This website</h1>
+            <div class="article-container">
+                <p>The above "reverse" of CC naturall leads to the definition of a Collatz Graph, which is the graph that describes all the possible routes one may take throughout the naturals starting from 1 and repetitively
+                    applying reverse Collatz steps. Drawing this graph can easily become a mess from a point and over, so this website is here to lift any worries you had about it - which, you probably haven't had until you
+                    started reading this. So, you simply add the number of nodes you would like to draw (preferably a positive integer larger than 3) and press "Generate". Then, after some seconds - or more, depending on your
+                    machine, since this runs on your browser - you will see in your screen the corresponding Collatz graph. In case it is larger than your screen, you will have to either scroll around or simple zoom out your
+                    browser's window/tab - hence, you better avoid opening this site on small screens and/or mobile devices.
+                </p>
+                <p>Feel free to contact me to fix any bugs you observe or ask any question at the following e-mail address:</p>
+                <p class="p-center about-code">aftermathsgr@gmail.com</p>
+                <p>Have fun with the tool and stay safe! :)</p>
+                <p>Geeky P.S.: You may find all the source code at the corresponding GitHub repository: </p>
+                <p class="p-center"><a href="https://github.com/VMarkos/collatz-tree-generator" class="about-link">https://github.com/VMarkos/collatz-tree-generator</a></p>
+                <p>Feel free to follow the repository - as well as me ;). Also redistribute the code as you wish, it is <a href="https://unlicense.org/" class="about-link">unlicenced!</a></p>
+            </div>
             </div>
         </div>
     </body>
