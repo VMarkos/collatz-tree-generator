@@ -7,7 +7,6 @@ input.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         event.preventDefault();
         drawGraph();
-        console.log("er");
     }
 });
 
@@ -62,8 +61,6 @@ function drawGraph() {
         }
         if (edge["isFork"]) {
             const maxFutureDepth = futureForksCheck(edge["start"], graphObject["maxNodeLabel"], yStep ,layerCounter, edges);
-            console.log(maxFutureDepth);
-            console.log(yStep);
             if (maxFutureDepth > yStep) {
                 currentY += maxFutureDepth;
             } else {
@@ -91,7 +88,6 @@ function futureForksCheck(currentNode, maxNodeLabel, yStep, layerCounter, edges)
     maxNodeLabel = currentNode * Math.pow(2, maxRowCount - layerCounter);
     currentNode = 4 * currentNode;
     let depth = 0;
-    console.log(maxNodeLabel);
     while (currentNode < maxNodeLabel) {
         if ((currentNode - 1) % 3 !== 0) {
             currentNode = 2 * currentNode;
