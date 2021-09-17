@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="stylesheet.css">
+        <title>Collatz Tree Generator</title>
+    </header>
+    <body>
+        <!--TODO Fix for screen width < 1024 -->
+        <div class="body-container">
+            <div class="header-container">
+                <div class="header-left-container">
+                    <div class="header-flush-bottom">
+                        <div class="logo-container">
+                            <a href="index.html" class="header-link">
+                                <div class="logo-text">
+                                    Collatz Tree Generator
+                                </div>
+                            </a>
+                        </div>
+                        <div class="header-text-container">
+                            <a href="about.html" class="header-link">
+                                <div class="header-text">
+                                    What is this?
+                                </div>
+                            </a>
+                        </div>
+                        <div class="header-text-container">
+                            <a href="https://aftermaths.gr" class="header-link">
+                                <div class="header-text">
+                                    aftermaths.gr
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right-container">
+                    <form class="collatz-form">
+                        <label for="node-number" class="collatz-label">Number of Nodes</label>
+                        <input type="text" id="node-number" name="node-number" class="collatz-text-input">
+                    </form>
+                    <div class="header-button" onclick="drawGraph()">Generate</div>
+                </div>
+            </div>
+            <div class="main-container">
+                <svg id="svg-container">
+                    <defs>
+                        <marker id="pointer" markerWidth="6" markerHeight="4" refX="2" refY="2" orient="auto" fill="white">
+                            <polyline points="0 0, 6 2, 0 4, 2 2, 0 0"/>
+                        </marker>
+                    </defs>
+                    <g id="tree-container"></g>
+                </svg>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="draw.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="computeGraph.js"></script>
+</html>
