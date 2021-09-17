@@ -13,6 +13,11 @@ input.addEventListener("keydown", function(event) {
 
 function drawGraph() {
     const n = input.value;
+    const validationRE = /\d+/;
+    if (!n.match(validationRE) || n < 3) {
+        window.alert("Please enter a positive integer greater than 3.");
+        return;
+    }
     const graphObject = computeGraph(n);
     const svg = document.getElementById("svg-container");
     let g = document.getElementById("tree-container");
