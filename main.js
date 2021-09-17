@@ -17,18 +17,18 @@ function drawGraph() {
     let yStep = svgHeight / 1.41; // FIXME SVG size issues.
     svg.setAttribute("width", svgWidth);
     svg.setAttribute("height", svgHeight * 2);
-    let currentX = 0;
-    let currentY = 0;
+    let currentX = 10;
+    let currentY = 10;
     const nodePositions = {};
     addNodeAt(currentX, currentY, nodeWidth, 1);
     nodePositions["1"] = {
-        x: 0,
-        y: 0,
+        x: 10,
+        y: 10,
     };
     let layerCounter = 0;
     const edges = graphObject["edges"];
     for (const edge of edges) {
-        console.log(edge);
+        // console.log(edge);
         const startX = nodePositions[edge["start"]]["x"];
         const startY = nodePositions[edge["start"]]["y"];
         currentX = startX + xStep;
@@ -41,6 +41,8 @@ function drawGraph() {
         }
         if (edge["isFork"]) {
             const maxFutureDepth = futureForksCheck(edge["start"], graphObject["maxNodeLabel"], yStep ,layerCounter, edges);
+            console.log(maxFutureDepth);
+            console.log(yStep);
             if (maxFutureDepth > yStep) {
                 currentY += maxFutureDepth;
             } else {
@@ -63,31 +65,40 @@ function drawGraph() {
 }
 
 function futureForksCheck(currentNode, maxNodeLabel, yStep, layerCounter, edges) {
-    yStep /= 1.41;
+    // yStep /= 1.41;
     // console.log(currentNode);
     const maxRowCount = Math.ceil(Math.log2(maxNodeLabel));
-    maxNodeLabel = currentNode;
-    for (let i=layerCounter; i<maxRowCount; i++) {
-        maxNodeLabel *= 2;
-    }
+    maxNodeLabel = currentNode * Math.pow(2, maxRowCount - layerCounter);
+    // for (let i=layerCounter; i<maxRowCount; i++) {
+    //     maxNodeLabel *= 2;
+    // }
     // console.log(maxNodeLabel);
     currentNode = 4 * currentNode;
-    const frontier = [currentNode];
-    let maxForks = 0;
-    while (currentNode < maxNodeLabel && frontier.length > 0) {
-        frontier.push(currentNode * 2);
-        if ((currentNode - 1) % 3 === 0) {
-            frontier.push((currentNode - 1) / 3);
+    // const frontier = [currentNode];
+    // let maxForks = 0;
+    let forksCount = 0;
+    console.log(maxNodeLabel);
+    while (currentNode < maxNodeLabel) {
+        if ((currentNode - 1) % 3 !== 0) {
+            currentNode = 2 * currentNode;
+        } else if (deepEdgeSearch(edges, {"start": currentNode, "end": (currentNode - 1) / 3, "isFork": true})) {
+            currentNode = (currentNode - 1) / 3;
+            maxNodeLabel /= 2;
+            forksCount += 1;
+            console.log(currentNode);
+            // const newMaxForks = maxConsecutiveForks(currentNode, edges);
+            // if (newMaxForks > maxForks) {
+            //     maxForks = newMaxForks;
+            // }
+            // currentNode = frontier.pop();
+        } else {
+            break;
         }
-        const newMaxForks = maxConsecutiveForks(currentNode, edges);
-        if (newMaxForks > maxForks) {
-            maxForks = newMaxForks;
-        }
-        currentNode = frontier.shift();
     }
-    // console.log(maxForks);
+    console.log("forks:");
+    console.log(forksCount);
     let depth = 0;
-    for (let i=0; i<maxForks; i++) {
+    for (let i=0; i<forksCount; i++) {
         depth += yStep;
         yStep /= 1.41;
     }
